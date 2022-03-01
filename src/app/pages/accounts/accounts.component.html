@@ -1,0 +1,35 @@
+<h2 class="content-block">Cuentas</h2>
+
+<dx-data-grid class="dx-card wide-card" [dataSource]="dataSource" keyExpr="_id" [showBorders]="false"
+  (onInitNewRow)="onInitRow($event)" (onRowInserting)="logEvent('RowInserting')"
+  (onRowInserted)="logEvent('RowInserted')" (onRowUpdating)="logEvent('RowUpdating')"
+  (onRowUpdated)="logEvent('RowUpdated')" (onRowRemoving)="logEvent('RowRemoving')"
+  (onRowRemoved)="logEvent('RowRemoved')" (onSaving)="onSaveGrid($event)" (onEditCanceling)="logEvent('EditCanceling')"
+  (onEditCanceled)="logEvent('EditCanceled')" [focusedRowEnabled]="true" [focusedRowIndex]="0" [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+  <dxo-paging [enabled]="false"></dxo-paging>
+  <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true">
+
+  </dxo-editing>
+
+  <dxi-column dataField="createdAt" dataType="date" [allowEditing]="false" caption="Fecha">
+  </dxi-column>
+  <dxi-column dataField="name" caption="Cuenta"></dxi-column>
+  <dxi-column dataField="description" caption="description"></dxi-column>
+  <dxi-column dataField="refDetails" [cellTemplate]="cellTemplate" caption="Details" [allowSorting]="false"
+    editCellTemplate="tagBoxEditor">
+    <dxo-lookup [dataSource]="DetailsSource" valueExpr="_id" displayExpr="name">
+    </dxo-lookup>
+  </dxi-column>
+  <!-- <dxi-column dataField="Notes" [visible]="false"> -->
+  <!-- <dxo-form-item [colSpan]="2" editorType="dxTextArea" [editorOptions]="{ height: 100 }"> -->
+  <!-- </dxo-form-item> -->
+  <!-- </dxi-column> -->
+  <div *dxTemplate="let cellInfo of 'tagBoxEditor'">
+    <dx-tag-box [dataSource]="DetailsSource" [value]="cellInfo.value" valueExpr="_id" displayExpr="name"
+      [showSelectionControls]="true" [maxDisplayedTags]="3" [showMultiTagOnly]="false" applyValueMode="useButtons"
+      [searchEnabled]="true" (onValueChanged)="cellInfo.setValue($event.value)"
+      (onSelectionChanged)="cellInfo.component.updateDimensions()">
+    </dx-tag-box>
+  </div>
+</dx-data-grid>

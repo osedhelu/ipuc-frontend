@@ -1,0 +1,42 @@
+<h2 class="content-block">Cuentas</h2>
+
+<dx-data-grid class="dx-card wide-card" (onEditingStart)="popoEditStart($event)" (onEditingStart)="logEvent($event)"
+  (onInitNewRow)="newRowPopu($event)" (onSaving)="prepareEditandSave($event)" [dataSource]="dataSource" keyExpr="_id"
+  [showBorders]="false" [focusedRowEnabled]="true" [focusedRowIndex]="0" [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+  <dxo-paging [enabled]="false"></dxo-paging>
+  <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
+
+  </dxo-editing>
+
+  <dxi-column dataField="createdAt" dataType="date" caption="Fecha">
+  </dxi-column>
+  <dxi-column dataField="name" caption="Cuenta"></dxi-column>
+  <dxi-column dataField="description" caption="Detalle"></dxi-column>
+
+  <dxi-column dataField="por" cellTemplate="cellTemplate" caption="Details" [allowSorting]="false"
+    editCellTemplate="tagBoxEditor">
+  </dxi-column>
+  <!-- <dxi-column dataField="Notes" [visible]="false"> -->
+  <!-- <dxo-form-item [colSpan]="2" editorType="dxTextArea" [editorOptions]="{ height: 100 }"> -->
+  <!-- </dxo-form-item> -->
+  <!-- </dxi-column> -->
+  <div *dxTemplate="let cellInfo of 'cellTemplate'">
+    <p *ngFor="let a of cellInfo.value">
+      {{a.description}}
+    </p>
+  </div>
+  <div *dxTemplate="let cellInfo of 'tagBoxEditor'">
+    <dx-data-grid [(dataSource)]="cellInfo.value" (onSaving)="updateSaving($event, cellInfo.value)">
+      <dxo-editing mode="cell" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
+      </dxo-editing>
+      <dxi-column dataField="position" caption="Posición"></dxi-column>
+      <dxi-column dataField="value" caption="Valor"></dxi-column>
+      <dxi-column dataField="description" caption="Descripción">
+        <dxo-lookup [dataSource]="cuentas" displayExpr="name" valueExpr="_id">
+        </dxo-lookup>
+      </dxi-column>
+    </dx-data-grid>
+  </div>
+
+</dx-data-grid>

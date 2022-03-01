@@ -1,0 +1,29 @@
+<h2 class="content-block">Libro</h2>
+
+<dx-data-grid class="dx-card wide-card" [dataSource]="dataSource" [showBorders]="false" [focusedRowEnabled]="true"
+  [focusedRowIndex]="0" [columnAutoWidth]="true" [columnHidingEnabled]="true">
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="fecha" caption="Fecha" dataType="date" [hidingPriority]="0">
+  </dxi-column>
+  <dxi-column dataField="cuenta.name" caption="Cuentas" dataType="string" [hidingPriority]="0">
+  </dxi-column>
+  <dxi-column dataField="wallet.name" caption="Details">
+  </dxi-column>
+  <dxi-column dataField="btcRef" caption="No.Do">
+  </dxi-column>
+  <dxi-column dataField="debito" caption="Ingreso" dataType="number" format="currency">
+  </dxi-column>
+  <dxi-column dataField="credito" caption="Egreso" dataType="number" format="currency">
+  </dxi-column>
+  <dxi-column fixedPosition="right" caption="Balance   " dataType="number" format="currency" cellTemplate="tmpBalcne">
+    <div *dxTemplate="let info of 'tmpBalcne'">
+      <div>
+        {{info.row.data?.prevBalance + info.row.data?.debito -
+        info.row.data?.credito | currency: " ":"symbol":"1.00": "it"}}
+      </div>
+    </div>
+  </dxi-column>
+</dx-data-grid>

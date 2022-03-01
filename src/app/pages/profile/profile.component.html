@@ -1,0 +1,51 @@
+<div class="content-block dx-card responsive-paddings">
+  <form (submit)="onFormSubmit($event)" *ngIf="employee">
+    <dx-form id="form" (onFieldDataChanged)="form_fieldDataChanged($event)" [(formData)]="employee" labelLocation="top"
+      [colCountByScreen]="colCountByScreen" [readOnly]="false" [showColonAfterLabel]="true"
+      [showValidationSummary]="true" validationGroup="customerData">
+      <dxi-item itemType="group" title="INGRESO" [colSpan]="2" [colCount]="2">
+        <dxi-item dataField="Fecha" editorType="dxDateBox" [editorOptions]="{ width: '100%' }"></dxi-item>
+        <dxi-item dataField="Cuentas" editorType="dxSelectBox"
+          [editorOptions]="{ items: account, searchEnabled: true, displayExpr:'name'}">
+          <dxi-validation-rule type="required" message="INGRESE UNA CUENTA"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="Cartera" editorType="dxSelectBox"
+          [editorOptions]="{ items: employee.Cuentas.refDetails, searchEnabled: true, displayExpr:'name'}">
+
+          <dxi-validation-rule type="required" message="Necesitas ingresar Una cartera"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="NoDo">
+          <dxi-validation-rule type="required" message="INGRESE UN CODIGO">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="Valor" [colSpan]="2" format="currency" editorType="dxNumberBox">
+          <dxi-validation-rule type="required" message="INGRESE UN VALOR">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="Notes" [colSpan]="2" editorType="dxTextArea" [editorOptions]="{ height: 140 }"></dxi-item>
+      </dxi-item>
+      <dxi-item [colSpan]="2" itemType="button" horizontalAlignment="center" [buttonOptions]="buttonOptions">
+      </dxi-item>
+    </dx-form>
+  </form>
+</div>
+<dx-popup [showTitle]="true" [title]="titlePopu()" [(visible)]="popupVisible" [showCloseButton]="true"
+  [closeOnOutsideClick]="true">
+  <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="EnviarbuttonOptions">
+  </dxi-toolbar-item>
+  <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="before" [options]="closeButtonOptions">
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view width="100%" height="100%">
+      <div *ngIf="entregas">
+        <dx-list>
+          <dxi-item *ngFor="let contact of entregas">
+            <div><b>{{ title(contact.name) }}</b></div>
+            <div>${{ contact.value | currency: " ":"symbol":"1.00": "it" }}</div>
+          </dxi-item>
+        </dx-list>
+      </div>
+
+    </dx-scroll-view>
+  </div>
+</dx-popup>

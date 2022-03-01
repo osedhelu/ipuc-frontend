@@ -1,0 +1,14 @@
+{
+  "/api/*": {
+    "target": "http://api-rest:9851",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/socket.io/*": {
+    "target": "http://api-rest:5493",
+    "secure": false,
+    "ws": true,
+    "logLevel": "debug"
+  }
+}
